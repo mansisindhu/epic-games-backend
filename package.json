@@ -1,0 +1,15 @@
+{
+  "name": "epic-games-backend",
+  "version": "1.0.0",
+  "description": "Epic Games backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mansisindhu/epic-games-backend.git"
+  },
+  "author": "Mansi Sindhu",
+  "license": "ISC"
+}
