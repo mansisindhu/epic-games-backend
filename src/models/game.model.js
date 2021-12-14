@@ -19,6 +19,8 @@ const gameSchema = new mongoose.Schema({
   tags: [{ type: String }],
   aboutGame: { type: String },
   gameFeatures: [{ type: String }],
+  heroImages: [{ type: String }],
+  videos: [{ type: String }],
   images: [{ type: String }],
   rating: {
     criticRecommend: { type: Number },
