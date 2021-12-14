@@ -1,9 +1,17 @@
 require("dotenv").config();
 
 const express = require("express");
+
+// NOTE controller
+const signupController = require("./src/controllers/signup.controller")
+const loginController = require("./src/controllers/login.controller")
+
+// NOTE imports regular
 const app = express();
 const cors = require("cors");
 const session = require("express-session");
+const cookieParser = require('cookie-parser')
+
 
 app.use(express.json());
 
@@ -59,5 +67,18 @@ app.get("/logout", (req, res) => {
   req.logout();
   res.send({});
 });
+
+
+
+// SECTION passport manual signup/login
+
+app.use(cookieParser(process.env.SECRET_KEY))
+app.use(passport.initialize())
+app.use(passport.session())
+require('./src/configs/passportConfig')
+
+app.use('/signup', signupController)
+app.use('/login', loginController)
+
 
 module.exports = app;
