@@ -1,5 +1,8 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
+const { v4: uuidv4 } = require("uuid");
+
+const User = require("../models/user.model");
 
 passport.use(
   new GoogleStrategy(
@@ -10,10 +13,23 @@ passport.use(
     },
     async function (accessToken, refreshToken, profile, cb) {
       const email = profile?._json?.email;
+      let user;
       try {
-        console.log(profile);
+        user = await User.findOne({ email }).lean().exec();
 
-        return cb(null, email);
+        if (!user) {
+          user = await User.create({
+            firstName: profile?._json?.given_name,
+            lastName: profile?._json?.family_name,
+            displayName: "",
+            email: email,
+            password: uuidv4(),
+            orders: [],
+            wishlist: [],
+          });
+        }
+
+        return cb(null, user);
       } catch (err) {
         return cb(err, null);
       }
