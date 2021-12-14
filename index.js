@@ -39,17 +39,20 @@ if (process.env.IS_HEROKU) {
   );
 }
 
+const User = require("./src/models/user.model");
+const userController = require("./src/controllers/user.controller");
+
 const passport = require("./src/configs/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function (user, done) {
-  done(null, user);
+  done(null, user._id);
 });
 
 passport.deserializeUser(async function (id, done) {
-  console.log(id);
-  done(null, id);
+  const newUser = await User.findById(id).lean().exec();
+  done(null, newUser);
 });
 
 app.get(
@@ -64,8 +67,8 @@ app.get(
   passport.authenticate("google", {
     failureRedirect: "/auth/google/failure", // 404 is shown
   }),
-  function (_, res) {
-    return res.redirect(`${process.env.ORIGIN}`);
+  function (req, res) {
+    return res.send({ user: req.user });
   }
 );
 
@@ -76,6 +79,12 @@ const isAuthenticated = (req, res, next) => {
     res.status(401).send({});
   }
 };
+
+app.get("/test", isAuthenticated, (req, res) => {
+  res.send({ user: req.user || null });
+});
+
+app.use("/user", userController); // pass middleware
 
 app.get("/logout", (req, res) => {
   req.logout();
