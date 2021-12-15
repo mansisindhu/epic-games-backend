@@ -45,6 +45,8 @@ app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 const User = require("./src/models/user.model");
 const userController = require("./src/controllers/user.controller");
 
+const gamesController = require("./src/controllers/games.controller");
+
 // Passport auth
 const passport = require("./src/configs/passport");
 app.use(passport.initialize());
@@ -118,6 +120,8 @@ app.get("/test", isAuthenticated, (req, res) => {
 
 // API paths
 app.use("/user", userController); // pass middleware
+
+app.use("/games", gamesController);
 
 // Logout api
 app.get("/logout", (req, res) => {
