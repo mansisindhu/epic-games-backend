@@ -4,11 +4,11 @@ const express = require('express')
 const passport = require('passport')
 const passportLocal = require('passport-local').Strategy
 const cookieParser = require('cookie-parser')
-const bcryptjs = require('bcrypt')
+const bcrypt = require('bcrypt')
 
 const router = express.Router()
 
-router.post('', (req, res) => {
+router.post("/", (req, res) => {
 
 
     User.findOne({ email: req.body.email }, async (err, doc) => {
@@ -17,11 +17,11 @@ router.post('', (req, res) => {
 
         if (!doc) {
 
-            const hashedPassword = await bcryptjs.hash(req.body.password, 10)
+            const hashedPassword = await bcrypt.hash(req.body.password, 10)
             const newUser = new User({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
-                userName: req.body.userName,
+                dispayName: req.body.userName,
                 email: req.body.email,
                 password: hashedPassword
             })

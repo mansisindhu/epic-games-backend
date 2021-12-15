@@ -75,7 +75,7 @@ app.get("/logout", (req, res) => {
 app.use(cookieParser(process.env.SECRET_KEY))
 app.use(passport.initialize())
 app.use(passport.session())
-require('./src/configs/passportConfig')
+require('./src/configs/passportLocal')
 
 app.use('/signup', signupController)
 app.use('/login', loginController)

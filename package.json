@@ -27,6 +27,6 @@
     "passport": "^0.5.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "redis": "^4.0.1"
+    "redis": "^3.1.2"
   }
 }

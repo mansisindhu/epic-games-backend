@@ -22,7 +22,7 @@ passport.use(
 
 
         } catch (err) {
-            done(err, 'nothing is working go to sleep')
+            done(err, 'Please try again after some time')
         }
     })
 )

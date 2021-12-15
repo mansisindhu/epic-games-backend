@@ -9,7 +9,7 @@ const bcryptjs = require('bcrypt')
 const router = express.Router()
 
 
-router.post("", (req, res, next) => {
+router.post("/", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
         if (err) throw err;
         if (!user) res.send("email or password is wrong");
