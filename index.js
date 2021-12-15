@@ -37,12 +37,15 @@ if (process.env.IS_HEROKU) {
   );
 }
 
+// CORS config
 const cors = require("cors");
 app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 
+// Models and controllers import
 const User = require("./src/models/user.model");
 const userController = require("./src/controllers/user.controller");
 
+// Passport auth
 const passport = require("./src/configs/passport");
 app.use(passport.initialize());
 app.use(passport.session());
@@ -73,6 +76,7 @@ app.get(
   }
 );
 
+// user auth middleware
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
@@ -81,12 +85,41 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
+// display name api
+app.post("/user/display-name-availability", async (req, res) => {
+  try {
+    if (req.body.displayName.length <= 2) {
+      return res.send({
+        message: "Too short",
+        status: false,
+      });
+    }
+
+    const displayName = await User.findOne({
+      displayName: req.body.displayName,
+    })
+      .lean()
+      .exec();
+    if (displayName)
+      return res.send({
+        message: "Already taken",
+        status: false,
+      });
+
+    return res.send({ message: "Perfect", status: true });
+  } catch (err) {
+    return res.status(500).send({});
+  }
+});
+
 app.get("/test", isAuthenticated, (req, res) => {
   res.send({ user: req.user || null });
 });
 
+// API paths
 app.use("/user", userController); // pass middleware
 
+// Logout api
 app.get("/logout", (req, res) => {
   req.logout();
   res.send({});
