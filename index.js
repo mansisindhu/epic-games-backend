@@ -85,6 +85,32 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
+// display name api
+app.post("/user/display-name-availability", async (req, res) => {
+  try {
+    if (req.body.displayName.length <= 2) {
+      return res.send({
+        message: "Too short",
+        status: false,
+      });
+    }
+
+    const displayName = await User.findOne({
+      displayName: req.body.displayName,
+    })
+      .lean()
+      .exec();
+    if (displayName)
+      return res.send({
+        message: "Already taken",
+        status: false,
+      });
+
+    return res.send({ message: "Perfect", status: true });
+  } catch (err) {
+    return res.status(500).send({});
+  }
+});
 
 app.get("/test", isAuthenticated, (req, res) => {
   res.send({ user: req.user || null });
