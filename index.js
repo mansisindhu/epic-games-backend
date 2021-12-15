@@ -2,11 +2,9 @@ require("dotenv").config();
 
 const express = require("express");
 const app = express();
-const session = require("express-session");
 app.use(express.json());
 
-const cors = require("cors");
-app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
+const session = require("express-session");
 
 if (process.env.IS_HEROKU) {
   app.set("trust proxy", 1);
@@ -38,6 +36,9 @@ if (process.env.IS_HEROKU) {
     })
   );
 }
+
+const cors = require("cors");
+app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 
 const User = require("./src/models/user.model");
 const userController = require("./src/controllers/user.controller");
