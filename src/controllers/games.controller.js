@@ -19,6 +19,9 @@ router.get("/filters", async (req, res) => {
     let genre = req.query.genre?.split(",");
     let features = req.query.features?.split(",");
     const sortBy = req.query.sortBy;
+    let platforms = req.query.platforms?.split(",");
+
+    platforms = platforms || ["Windows", "Mac"];
 
     features = features || [
       "single-player",
@@ -48,6 +51,7 @@ router.get("/filters", async (req, res) => {
         { genres: { $in: genre } },
         { features: { $in: features } },
         { "price.mainPrice": { $lt: underMinAmount } },
+        { platform: { $in: platforms } },
       ],
     });
 
