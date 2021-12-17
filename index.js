@@ -74,7 +74,11 @@ app.get(
     failureRedirect: "/auth/google/failure", // 404 is shown
   }),
   function (req, res) {
-    return res.send({ user: req.user });
+    if (req.user.displayName) {
+      res.redirect(process.env.FRONTEND_URL);
+    } else {
+      res.redirect(`${process.env.FRONTEND_URL}/signup/display-name`);
+    }
   }
 );
 
@@ -119,7 +123,7 @@ app.get("/test", isAuthenticated, (req, res) => {
 });
 
 // API paths
-app.use("/user", userController); // pass middleware
+app.use("/user", isAuthenticated, userController); // pass middleware
 
 app.use("/games", gamesController);
 
