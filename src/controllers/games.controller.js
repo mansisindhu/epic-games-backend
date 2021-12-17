@@ -7,7 +7,7 @@ router.get("/", async (_, res) => {
   try {
     const games = await Games.find({}).lean().exec();
 
-    res.status(200).send({ games });
+    res.status(200).send(games);
   } catch (err) {
     res.send(500).send({ err });
   }

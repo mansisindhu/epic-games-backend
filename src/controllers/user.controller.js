@@ -14,14 +14,74 @@ router.get("/", async (req, res) => {
 router.post("/display-name", async (req, res) => {
   try {
     // After conneted to frontend the _id will come through req.user
-    await User.findByIdAndUpdate(req.body._id, req.body, {
+    await User.findByIdAndUpdate(req.user._id, req.body, {
       new: true,
     })
       .lean()
       .exec();
     return res.send({});
   } catch (err) {
-    res.status(500).send({});
+    res.status(500).send({ err });
+  }
+});
+
+router.patch("/wishlist", async (req, res) => {
+  try {
+    let userData = await User.findById(req.user._id).lean().exec();
+
+    let isPresent = false;
+
+    userData.wishlist.forEach((el) => {
+      if (req.body.gameId === el.toString()) {
+        isPresent = true;
+      }
+    });
+
+    if (isPresent) {
+      res.status(409).send({ message: "Already in wishlist", error: true });
+      return;
+    }
+
+    const data = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $push: { wishlist: [req.body.gameId] },
+      },
+      { new: true }
+    );
+    res.send(data);
+  } catch (err) {
+    res.status(500).send({ err });
+  }
+});
+
+router.patch("/orders", async (req, res) => {
+  try {
+    let userData = await User.findById(req.user._id).lean().exec();
+
+    let isPresent = false;
+
+    userData.orders.forEach((el) => {
+      if (req.body.gameId === el.toString()) {
+        isPresent = true;
+      }
+    });
+
+    if (isPresent) {
+      res.status(409).send({ message: "Already in orders", error: true });
+      return;
+    }
+
+    const data = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $push: { orders: [req.body.gameId] },
+      },
+      { new: true }
+    );
+    res.send(data);
+  } catch (err) {
+    res.status(500).send({ err });
   }
 });
 
