@@ -25,6 +25,20 @@ router.post("/display-name", async (req, res) => {
   }
 });
 
+router.patch("/remove-wishlist", async (req, res) => {
+  try {
+    const data = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $pull: { wishlist: req.body.gameId },
+      },
+      { new: true }
+    );
+
+    res.send({ data });
+  } catch (err) {}
+});
+
 router.patch("/add-wishlist", async (req, res) => {
   try {
     let userData = await User.findById(req.user._id).lean().exec();
