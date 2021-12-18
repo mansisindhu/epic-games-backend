@@ -21,30 +21,36 @@ router.get("/filters", async (req, res) => {
     const sortBy = req.query.sortBy;
     let platforms = req.query.platforms?.split(",");
 
-    platforms = platforms || ["Windows", "Mac"];
+    if (platforms[0] === "") {
+      platforms = ["Windows", "Mac"];
+    }
 
-    features = features || [
-      "single-player",
-      "multiplayer",
-      "controller-support",
-      "co-op",
-      "competitive",
-    ];
+    if (features[0] === "") {
+      features = [
+        "single-player",
+        "multiplayer",
+        "controller-support",
+        "co-op",
+        "competitive",
+      ];
+    }
 
-    genre = genre || [
-      "Action",
-      "Fighting",
-      "Indie",
-      "Puzzle",
-      "Strategy",
-      "Horror",
-      "Survival",
-      "Casual",
-      "Shooter",
-      "Adventure",
-    ];
+    if (genre[0] === "") {
+      genre = [
+        "Action",
+        "Fighting",
+        "Indie",
+        "Puzzle",
+        "Strategy",
+        "Horror",
+        "Survival",
+        "Casual",
+        "Shooter",
+        "Adventure",
+      ];
+    }
 
-    const underMinAmount = parseInt(price) || 100000000;
+    let underMinAmount = parseInt(price) || 100000000;
 
     let data = await Games.find({
       $and: [
