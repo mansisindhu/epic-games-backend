@@ -25,7 +25,7 @@ router.post("/display-name", async (req, res) => {
   }
 });
 
-router.patch("/wishlist", async (req, res) => {
+router.patch("/add-wishlist", async (req, res) => {
   try {
     let userData = await User.findById(req.user._id).lean().exec();
 
@@ -51,11 +51,12 @@ router.patch("/wishlist", async (req, res) => {
     );
     res.send(data);
   } catch (err) {
+    console.log(err);
     res.status(500).send({ err });
   }
 });
 
-router.patch("/orders", async (req, res) => {
+router.patch("/add-orders", async (req, res) => {
   try {
     let userData = await User.findById(req.user._id).lean().exec();
 
