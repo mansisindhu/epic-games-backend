@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const gameSchema = new mongoose.Schema({
   title: { type: String },
   logo: { type: String },
+  thumbnail: { type: String },
   cardImage: { type: String },
   cardTagline: { type: String },
   price: {
     mainPrice: { type: Number },
     discountPercentage: { type: Number },
+    discountedPrice: { type: Number },
   },
   developer: { type: String },
   publisher: { type: String },
@@ -20,7 +22,6 @@ const gameSchema = new mongoose.Schema({
   aboutGame: { type: String },
   gameFeatures: [{ type: String }],
   heroImages: [{ type: String }],
-  videos: [{ type: String }],
   images: [{ type: String }],
   rating: {
     criticRecommend: { type: Number },
