@@ -56,7 +56,7 @@ router.get("/filters", async (req, res) => {
       $and: [
         { genres: { $in: genre } },
         { features: { $in: features } },
-        { "price.mainPrice": { $lt: underMinAmount } },
+        { "price.discountedPrice": { $lt: underMinAmount } },
         { platform: { $in: platforms } },
       ],
     });
