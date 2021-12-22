@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema(
     lastName: { type: String },
     displayName: { type: String },
     email: { type: String, required: true },
-    password: { type: String, required: true },
     orders: [
       { type: mongoose.Schema.Types.ObjectId, ref: "games", required: false },
     ],
