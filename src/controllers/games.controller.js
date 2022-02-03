@@ -18,7 +18,6 @@ router.get("/filters", async (req, res) => {
     const price = req.query.price;
     let genre = req.query.genre?.split(",");
     let features = req.query.features?.split(",");
-    const sortBy = req.query.sortBy;
     let platforms = req.query.platforms?.split(",");
 
     if (platforms[0] === "") {
